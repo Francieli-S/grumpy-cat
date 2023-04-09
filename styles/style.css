@@ -1,0 +1,12 @@
+body {
+  background-color: aquamarine;
+}
+
+#game-board {
+  float: left;
+  padding: 20px 200px;
+}
+
+#canvas {
+  background-color: aliceblue;
+}
