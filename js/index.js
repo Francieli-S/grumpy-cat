@@ -1,4 +1,5 @@
 window.addEventListener("load", () => {
+  const scoreGame = document.querySelector("#score");
   const canvas = document.querySelector("#canvas");
   const ctx = canvas.getContext("2d");
 
@@ -19,6 +20,7 @@ window.addEventListener("load", () => {
   const catWidth = 80;
   let catX = canvas.width / 2 - catWidth / 2;
   const catY = canvas.height - catHeight - 10;
+  const catSpeed = 2;
 
   let isMovingRight = false;
   let isMovingLeft = false;
@@ -27,10 +29,39 @@ window.addEventListener("load", () => {
   let animatedId;
   let elemFromTop = [];
 
+  let score = 0;
+  scoreGame.innerText = score;
+
+  class Type {
+    constructor(color, score) {
+      this.color = color;
+      this.score = score;
+    }
+  }
+
+  class Treat extends Type {
+    constructor() {
+      super("green", 1);
+    }
+  }
+
+  class Chocolate extends Type {
+    constructor() {
+      super("red", -1);
+    }
+  }
+
+  class Cup extends Type {
+    constructor() {
+      super("blue", 0);
+    }
+  }
+
   class ElementFromTop {
-    constructor(x) {
-      this.xPos = x;
-      this.yPos = -10;
+    constructor(type) {
+      this.type = type;
+      this.xPos = Math.random() * (canvas.width - 20);
+      this.yPos = Math.random() * -10;
       this.width = 15;
       this.height = 15;
     }
@@ -41,13 +72,22 @@ window.addEventListener("load", () => {
 
     draw() {
       ctx.beginPath();
-      ctx.fillStyle = "blue";
+      ctx.fillStyle = this.type.color;
       ctx.rect(this.xPos, this.yPos, this.width, this.height);
       ctx.fill();
       ctx.closePath();
     }
 
-    collision() {}
+    collision() {
+      if (
+        catX < this.xPos + this.width &&
+        catX + catWidth > this.xPos &&
+        catY < this.yPos + this.height &&
+        catHeight + catY > this.yPos
+      ) {
+        return true;
+      }
+    }
   }
 
   const drawCat = () => {
@@ -67,24 +107,39 @@ window.addEventListener("load", () => {
 
     elemFromTop.forEach((elem) => {
       elem.draw();
-      elem.move();
-      // is the elem still in the screen
-      if (elem.yPos < canvas.height) {
+      console.log(elem.type);
+      if (elem.collision() && elem.type === "Cup") {
+        gameOver = true;
+        console.log(gameOver);
+      } else if (elem.collision()) {
+        score += elem.type.score;
+        console.log(score);
+      } else if (!elem.collision() && elem.yPos < canvas.height) {
+        elem.move();
         elemFromTopStilInScreen.push(elem);
       }
     });
 
     elemFromTop = elemFromTopStilInScreen;
 
-    if (animatedId % 300 === 0) {
-      // 300 is the height the obstacle falling atinge
-      elemFromTop.push(new ElementFromTop(Math.random() * (canvas.width - 20)));
+    if (isMovingRight && catX < canvas.width - catWidth) {
+      catX += catSpeed;
+    } else if (isMovingLeft && catX > 0) {
+      catX -= catSpeed;
     }
 
-    if (isMovingRight) {
-      catX += 2;
-    } else if (isMovingLeft) {
-      catX -= 2;
+    if (animatedId === 30 || animatedId % 300 === 0) {
+      const arr = ["CHOC", "TRE", "TRE", "CUP"];
+      const random = Math.floor(Math.random() * arr.length);
+      const nextType = arr[random];
+
+      if (nextType === "CHOC") {
+        elemFromTop.push(new ElementFromTop(new Chocolate()));
+      } else if (nextType === "TRE") {
+        elemFromTop.push(new ElementFromTop(new Treat()));
+      } else if (nextType === "CUP") {
+        elemFromTop.push(new ElementFromTop(new Cup()));
+      }
     }
 
     if (gameOver) {
@@ -112,7 +167,6 @@ window.addEventListener("load", () => {
   });
 
   document.addEventListener("keyup", (event) => {
-    console.log(event);
     if (event.key === "ArrowRight") {
       isMovingRight = false;
     }
