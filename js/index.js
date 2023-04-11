@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
   // audio.play()
 
   const bgImg = new Image();
-  bgImg.src = "../images/kitchen.png";
+  bgImg.src = "images/kitchen.png";
 
   // class Node {
   //   constructor(value) {
@@ -26,28 +26,28 @@ window.addEventListener("load", () => {
   //   }
 
   const catWalksRigthOne = new Image();
-  catWalksRigthOne.src = "../images/cat-right-one.png";
+  catWalksRigthOne.src = "images/cat-right-one.png";
 
   const catWalksLeftOne = new Image();
-  catWalksLeftOne.src = "../images/cat-left-one.png";
+  catWalksLeftOne.src = "images/cat-left-one.png";
 
   const catWalksRigthTwo = new Image();
-  catWalksRigthTwo.src = "../images/cat-right-one.png";
+  catWalksRigthTwo.src = "images/cat-right-one.png";
 
   const catWalksLeftTwo = new Image();
-  catWalksLeftTwo.src = "../images/cat-left-one.png";
+  catWalksLeftTwo.src = "images/cat-left-one.png";
 
   // const catSleep = new Image();
   // catSleep.src = "";
 
   const treat = new Image();
-  treat.src = "../images/treat.png";
+  treat.src = "images/treat.png";
 
   const chocolate = new Image();
-  chocolate.src = "../images/chocolate.png";
+  chocolate.src = "images/chocolate.png";
 
   const cup = new Image();
-  cup.src = "../images/cup.png";
+  cup.src = "images/cup.png";
 
   const catHeight = 150;
   const catWidth = 200;
