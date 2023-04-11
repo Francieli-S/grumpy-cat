@@ -4,19 +4,48 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+Pro&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles/style.css" />
     <title>Grump Cat</title>
   </head>
   <body>
-    <div class="game-intro">
-      <button id="start-button">Start Game</button>
-    </div>
-    <div class="game-score">
-      <p id="score">0</p>
-    </div>
-    <div id="game-board">
-      <canvas id="canvas" width="400" height="500"> </canvas>
-    </div>
+    <section>
+      <div class="game-intro">
+        <h1>Grumpy Cat</h1>
+        <p>
+          This game is inspired by those grumpy but super funny cats who like to
+          push things and watch them fall just because for fun and to annoy us,
+          the humans!
+        </p>
+        <p>The goal is:</p>
+        <ul>
+          <li>Collect delicious treats: score +1</li>
+          <li>Avoid toxic chocolates, otherwise: score -1</li>
+          <li>
+            Push cups: score +5. Otherwise: lose 1 of the cat's seven lives
+          </li>
+        </ul>
+        <p>Have fun!</p>
+
+        <div class="buttons">
+          <button id="start-button">Start Game</button>
+          <button id="restart-button">Restart Game</button>
+        </div>
+        <div class="game-score">
+          <p id="score">Score: <span>0</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="game-board">
+      <canvas id="canvas" width="900" height="600"> </canvas>
+    </section>
+
     <script type="text/javascript" src="js/index.js"></script>
   </body>
 </html>

@@ -1,26 +1,59 @@
 window.addEventListener("load", () => {
-  const scoreGame = document.querySelector("#score");
+  const scoreGame = document.querySelector("#score span");
   const canvas = document.querySelector("#canvas");
   const ctx = canvas.getContext("2d");
 
+  // const audio = new Audio(<path to audio>)
+  // audio.play()
+
   const bgImg = new Image();
   bgImg.src = "../images/kitchen.png";
-  //bgImg.style.opacity = "50"; ?
 
-  const catRigth = new Image();
-  catRigth.src = "";
+  // class Node {
+  //   constructor(value) {
+  //     (this.value = value), (this.next = null);
+  //   }
+  // }
 
-  const catLeft = new Image();
-  catLeft.src = "";
+  // class LinkedList {
+  //   constructor(value) {
+  //     this.head = {
+  //       value: value,
+  //       next: null,
+  //     };
+  //     this.tail = this.head;
+  //     this.length = 1;
+  //   }
 
-  const catSleep = new Image();
-  catSleep.src = "";
+  const catWalksRigthOne = new Image();
+  catWalksRigthOne.src = "../images/cat-right-one.png";
 
-  const catHeight = 60;
-  const catWidth = 80;
+  const catWalksLeftOne = new Image();
+  catWalksLeftOne.src = "../images/cat-left-one.png";
+
+  const catWalksRigthTwo = new Image();
+  catWalksRigthTwo.src = "../images/cat-right-one.png";
+
+  const catWalksLeftTwo = new Image();
+  catWalksLeftTwo.src = "../images/cat-left-one.png";
+
+  // const catSleep = new Image();
+  // catSleep.src = "";
+
+  const treat = new Image();
+  treat.src = "../images/treat.png";
+
+  const chocolate = new Image();
+  chocolate.src = "../images/chocolate.png";
+
+  const cup = new Image();
+  cup.src = "../images/cup.png";
+
+  const catHeight = 150;
+  const catWidth = 200;
   let catX = canvas.width / 2 - catWidth / 2;
   const catY = canvas.height - catHeight - 10;
-  const catSpeed = 2;
+  const catSpeed = 3;
 
   let isMovingRight = false;
   let isMovingLeft = false;
@@ -30,40 +63,18 @@ window.addEventListener("load", () => {
   let elemFromTop = [];
 
   let score = 0;
-  scoreGame.innerText = score;
 
-  class Type {
-    constructor(color, score) {
-      this.color = color;
-      this.score = score;
-    }
-  }
-
-  class Treat extends Type {
-    constructor() {
-      super("green", 1);
-    }
-  }
-
-  class Chocolate extends Type {
-    constructor() {
-      super("red", -1);
-    }
-  }
-
-  class Cup extends Type {
-    constructor() {
-      super("blue", 0);
-    }
-  }
+  console.log(typeof score);
+  console.log(score);
 
   class ElementFromTop {
-    constructor(type) {
-      this.type = type;
+    constructor(img, score) {
+      this.img = img;
+      this.score = score;
       this.xPos = Math.random() * (canvas.width - 20);
       this.yPos = Math.random() * -10;
-      this.width = 15;
-      this.height = 15;
+      this.width = 50;
+      this.height = 50;
     }
 
     move() {
@@ -72,9 +83,7 @@ window.addEventListener("load", () => {
 
     draw() {
       ctx.beginPath();
-      ctx.fillStyle = this.type.color;
-      ctx.rect(this.xPos, this.yPos, this.width, this.height);
-      ctx.fill();
+      ctx.drawImage(this.img, this.xPos, this.yPos, this.width, this.height);
       ctx.closePath();
     }
 
@@ -91,11 +100,15 @@ window.addEventListener("load", () => {
   }
 
   const drawCat = () => {
-    ctx.beginPath();
-    ctx.fillStyle = "orange";
-    ctx.rect(catX, catY, catWidth, catHeight);
-    ctx.fill();
-    ctx.closePath();
+    if (isMovingRight) {
+      ctx.beginPath();
+      ctx.drawImage(catWalksRigthOne, catX, catY, catWidth, catHeight);
+      ctx.closePath();
+    } else {
+      ctx.beginPath();
+      ctx.drawImage(catWalksLeftOne, catX, catY, catWidth, catHeight);
+      ctx.closePath();
+    }
   };
 
   const animate = () => {
@@ -107,13 +120,11 @@ window.addEventListener("load", () => {
 
     elemFromTop.forEach((elem) => {
       elem.draw();
-      console.log(elem.type);
-      if (elem.collision() && elem.type === "Cup") {
+      if (elem.collision() && elem.img === cup) {
         gameOver = true;
-        console.log(gameOver);
       } else if (elem.collision()) {
-        score += elem.type.score;
-        console.log(score);
+        score += elem.score;
+        scoreGame.innerText = score;
       } else if (!elem.collision() && elem.yPos < canvas.height) {
         elem.move();
         elemFromTopStilInScreen.push(elem);
@@ -128,17 +139,20 @@ window.addEventListener("load", () => {
       catX -= catSpeed;
     }
 
-    if (animatedId === 30 || animatedId % 300 === 0) {
-      const arr = ["CHOC", "TRE", "TRE", "CUP"];
+    if (animatedId === 30 || animatedId % 150 === 0) {
+      const arr = ["CHOC", "TRE", "TRE", "TRE", "CUP"];
       const random = Math.floor(Math.random() * arr.length);
       const nextType = arr[random];
 
       if (nextType === "CHOC") {
-        elemFromTop.push(new ElementFromTop(new Chocolate()));
+        // elemFromTop.push(new ElementFromTop(new Chocolate()));
+        elemFromTop.push(new ElementFromTop(chocolate, -1));
       } else if (nextType === "TRE") {
-        elemFromTop.push(new ElementFromTop(new Treat()));
+        //elemFromTop.push(new ElementFromTop(new Treat()));
+        elemFromTop.push(new ElementFromTop(treat, +1));
       } else if (nextType === "CUP") {
-        elemFromTop.push(new ElementFromTop(new Cup()));
+        //elemFromTop.push(new ElementFromTop(new Cup()));
+        elemFromTop.push(new ElementFromTop(cup, 0));
       }
     }
 
