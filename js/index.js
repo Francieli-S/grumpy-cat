@@ -1,10 +1,26 @@
 window.addEventListener("load", () => {
   const scoreGame = document.querySelector("#score span");
+  const livesGame = document.querySelector("#lives span");
   const canvas = document.querySelector("#canvas");
   const ctx = canvas.getContext("2d");
 
-  // const audio = new Audio(<path to audio>)
-  // audio.play()
+  //const purr = new Audio("sounds/purr.mp3");
+  //purr.play();
+
+  const game = new Audio("sounds/game.mp3");
+  game.play();
+
+  const crunch = new Audio("sounds/crunch.mp3");
+  crunch.play();
+
+  const whoosh = new Audio("sounds/whoosh.mp3");
+  whoosh.play();
+
+  const scream = new Audio("sounds/scream.mp3");
+  scream.play();
+
+  const yuck = new Audio("sounds/yuck.mp3");
+  yuck.play();
 
   const bgImg = new Image();
   bgImg.src = "images/kitchen.png";
@@ -37,6 +53,9 @@ window.addEventListener("load", () => {
   const catWalksLeftTwo = new Image();
   catWalksLeftTwo.src = "images/cat-left-one.png";
 
+  const catPushs = new Image();
+  catPushs.src = "images/cat-pushing-right.png";
+
   // const catSleep = new Image();
   // catSleep.src = "";
 
@@ -49,36 +68,36 @@ window.addEventListener("load", () => {
   const cup = new Image();
   cup.src = "images/cup.png";
 
-  const catHeight = 150;
-  const catWidth = 200;
+  let catHeight = 150;
+  let catWidth = 200;
   let catX = canvas.width / 2 - catWidth / 2;
   const catY = canvas.height - catHeight - 10;
   const catSpeed = 3;
 
   let isMovingRight = false;
   let isMovingLeft = false;
+  let isPushingCup = false;
 
   let gameOver = false;
+  let nextLevel = false;
   let animatedId;
   let elemFromTop = [];
 
   let score = 0;
-
-  console.log(typeof score);
-  console.log(score);
+  let lives = 7;
 
   class ElementFromTop {
     constructor(img, score) {
       this.img = img;
       this.score = score;
-      this.xPos = Math.random() * (canvas.width - 20);
+      this.xPos = Math.random() * (canvas.width - 50);
       this.yPos = Math.random() * -10;
       this.width = 50;
       this.height = 50;
     }
 
     move() {
-      this.yPos += 1;
+      this.yPos += 2;
     }
 
     draw() {
@@ -100,19 +119,35 @@ window.addEventListener("load", () => {
   }
 
   const drawCat = () => {
-    if (isMovingRight) {
+    if (!isMovingRight && !isMovingLeft && !isPushingCup) {
       ctx.beginPath();
       ctx.drawImage(catWalksRigthOne, catX, catY, catWidth, catHeight);
       ctx.closePath();
-    } else {
+    }
+    if (isMovingRight) {
+      isMovingLeft = false;
+      ctx.beginPath();
+      ctx.drawImage(catWalksRigthOne, catX, catY, catWidth, catHeight);
+      ctx.closePath();
+    }
+    if (isMovingLeft) {
+      isMovingRight = false;
       ctx.beginPath();
       ctx.drawImage(catWalksLeftOne, catX, catY, catWidth, catHeight);
+      ctx.closePath();
+    }
+    if (isPushingCup) {
+      isMovingRight = false;
+      isMovingLeft = false;
+      ctx.beginPath();
+      ctx.drawImage(catPushs, catX, canvas.height - 160, 130, 150);
       ctx.closePath();
     }
   };
 
   const animate = () => {
     ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+    game.play();
 
     drawCat();
 
@@ -120,8 +155,29 @@ window.addEventListener("load", () => {
 
     elemFromTop.forEach((elem) => {
       elem.draw();
-      if (elem.collision() && elem.img === cup) {
-        gameOver = true;
+      if (score >= 100) {
+        nextLevel = true;
+        scoreGame.innerText = "YOU WON! CONGRATS! Go to next level";
+      } else if (elem.collision() && elem.img === cup && !isPushingCup) {
+        scream.play();
+        lives -= 1;
+        livesGame.innerText = lives;
+        if (lives === 0) {
+          scoreGame.innerText = "Game Over";
+          gameOver = true;
+        }
+      } else if (elem.collision() && elem.img === cup && isPushingCup) {
+        whoosh.play();
+        score += elem.score;
+        scoreGame.innerText = score;
+      } else if (elem.collision() && elem.img === treat) {
+        crunch.play();
+        score += elem.score;
+        scoreGame.innerText = score;
+      } else if (elem.collision() && elem.img === chocolate) {
+        yuck.play();
+        score += elem.score;
+        scoreGame.innerText = score;
       } else if (elem.collision()) {
         score += elem.score;
         scoreGame.innerText = score;
@@ -139,24 +195,21 @@ window.addEventListener("load", () => {
       catX -= catSpeed;
     }
 
-    if (animatedId === 30 || animatedId % 150 === 0) {
-      const arr = ["CHOC", "TRE", "TRE", "TRE", "CUP"];
+    if (animatedId === 30 || animatedId % 100 === 0) {
+      const arr = ["CHOC", "CHOC", "TRE", "CUP", "CUP", "CUP"];
       const random = Math.floor(Math.random() * arr.length);
       const nextType = arr[random];
 
       if (nextType === "CHOC") {
-        // elemFromTop.push(new ElementFromTop(new Chocolate()));
         elemFromTop.push(new ElementFromTop(chocolate, -1));
       } else if (nextType === "TRE") {
-        //elemFromTop.push(new ElementFromTop(new Treat()));
         elemFromTop.push(new ElementFromTop(treat, +1));
       } else if (nextType === "CUP") {
-        //elemFromTop.push(new ElementFromTop(new Cup()));
-        elemFromTop.push(new ElementFromTop(cup, 0));
+        elemFromTop.push(new ElementFromTop(cup, 10));
       }
     }
 
-    if (gameOver) {
+    if (gameOver || nextLevel) {
       cancelAnimationFrame(animatedId);
     } else {
       animatedId = requestAnimationFrame(animate);
@@ -164,11 +217,35 @@ window.addEventListener("load", () => {
   };
 
   const startGame = () => {
+    drawCat();
+    animate();
+  };
+
+  const restartGame = () => {
+    isMovingRight = false;
+    isMovingLeft = false;
+    isPushingCup = false;
+
+    gameOver = false;
+    animatedId;
+    elemFromTop = [];
+
+    score = 0;
+    scoreGame.innerText = score;
+
+    lives = 7;
+    livesGame.innerText = lives;
+
+    drawCat();
     animate();
   };
 
   document.querySelector("#start-button").addEventListener("click", () => {
     startGame();
+  });
+
+  document.querySelector("#restart-button").addEventListener("click", () => {
+    restartGame();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -178,6 +255,9 @@ window.addEventListener("load", () => {
     if (event.key === "ArrowLeft") {
       isMovingLeft = true;
     }
+    if (event.key === "ArrowUp") {
+      isPushingCup = true;
+    }
   });
 
   document.addEventListener("keyup", (event) => {
@@ -186,6 +266,9 @@ window.addEventListener("load", () => {
     }
     if (event.key === "ArrowLeft") {
       isMovingLeft = false;
+    }
+    if (event.key === "ArrowUp") {
+      isPushingCup = false;
     }
   });
 });
