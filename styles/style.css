@@ -37,6 +37,11 @@ li {
   height: 4%;
 }
 
+#game-keys {
+  width: 12%;
+  height: 12%;
+}
+
 button {
   font-size: 1em;
   width: 30%;

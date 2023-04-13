@@ -2,70 +2,57 @@
 
 # Description
 
-Grumpy Cat is a game where the player has to move the cat, which is positioned horizontally at the bottom and try to react to the items that come from the top. Catch the treats increment the score, catching the chocolates decrement the score, and catching the other items, like cups, makes the cat loses one of its seven lives.
+Grumpy Cat is a game where the player has to move the cat positioned horizontally at the bottom and try to react to the items that come from the top. Catch treats increment the score, catch chocolates decrement the score, and catch cups also increment the score. However, if the cat does not manage to push the cups, the cat loses one of its seven lives.
 
 # MVP (DOM - CANVAS)
 
-- game starts with the game sleeping
 - the game has a cat at the bottom that moves horizontally
 - as soon he moves, things come from top to bottom
 - these things are: treats, chocolates, and cups
-- catch treats increment the score
-- catch chocolates decrement the score
-- catch a cup ends the game
+- catch treats increment the score by 1
+- catch chocolates decrement the score by -1
+- push cups increment the score by 10
+- hitting 100 points, leads to next level (to be developed)
+- the game over when the cat loses its seven lives
 
 # Backlog
 
-- add the ability to cat use its paw to hit the cup and increment two times the score
-- add Tv controls to work the same way as the cups
+- add multiple images to simulate the cat walking
+- when pushing, make the cup change the direction not just disappear
 
 # Data Structure
 
-# main.js
+# index.js
 
-<!-- buildSplashScreen () {}
-buildGameScreen () {}
-buildGameOverScreen () {} -->
-
-# game.js
-
-<!-- Game () {}
-starLoop () {}
-checkCollisions () {}
-addTentacle () {}
-clearCanvas () {}
-updateCanvas () {}
-drawCanvas () {}
-GameOver () {} -->
-
-# cat.js ?
-
-<!-- Ship () { this.x; this.y; this.direction; this.size }
-draw () {}
-move () {}
-shoot () {}
-checkScreenCollision () {} -->
-
-# thingFromTop.js
-
-<!-- Tentacle () { this.x; this.y; this.direction; this.size }
-draw () {}
-move () {}
-checkCollisionBotton () {} -->
+class ElementFromTop { move(), draw(), collision() }
+drawCat() {}
+gameOverMessage() {}
+winMessage() {}
+animate() {}
+startGame() {}
+restartGame() {}
 
 # States y States Transitions
 
-<!-- Definition of the different states and their transition (transition functions)
-splashScreen
-gameScreen
-gameOverScreen -->
+isMovingRight = false;
+isMovingLeft = false;
+isPushingCup = false;
+gameOver = false;
+nextLevel = false;
+elemFromTop = [];
+score = 0;
+lives = 7;
 
 # Links
 
-<!-- Trello
+Project repo:
+https://github.com/Francieli-S/grumpy-cat
 
-Git
-URls for the project repo and deploy Link Repo Link Deploy
+Deploy link:
+https://francieli-s.github.io/grumpy-cat/
 
-Slides
-URls for the project presentation (slides) Link Slides.com -->
+Trello:
+https://trello.com/b/oSK23WFq/grumpy-cat
+
+Slides:
+https://docs.google.com/presentation/d/1H1sRYyafvq2Ly1ANw8DhLmKCVDznX6OdbB3dUVCvgn4/edit?usp=sharing

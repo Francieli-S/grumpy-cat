@@ -1,6 +1,8 @@
 window.addEventListener("load", () => {
   const scoreGame = document.querySelector("#score span");
   const livesGame = document.querySelector("#lives span");
+  const startButton = document.querySelector("#start-button");
+  const restartButton = document.querySelector("#restart-button");
   const canvas = document.querySelector("#canvas");
   const ctx = canvas.getContext("2d");
 
@@ -235,9 +237,11 @@ window.addEventListener("load", () => {
     if (gameOver) {
       cancelAnimationFrame(animatedId);
       gameOverMessage();
+      restartButton.disabled = false;
     } else if (nextLevel) {
       cancelAnimationFrame(animatedId);
       winMessage();
+      restartButton.disabled = false;
     } else {
       animatedId = requestAnimationFrame(animate);
     }
@@ -268,12 +272,15 @@ window.addEventListener("load", () => {
     animate();
   };
 
-  document.querySelector("#start-button").addEventListener("click", () => {
+  startButton.addEventListener("click", () => {
     startGame();
+    startButton.disabled = true;
+    restartButton.disabled = true;
   });
 
-  document.querySelector("#restart-button").addEventListener("click", () => {
+  restartButton.addEventListener("click", () => {
     restartGame();
+    restartButton.disabled = true;
   });
 
   document.addEventListener("keydown", (event) => {

@@ -23,7 +23,6 @@
           humans!
         </p>
         <p>The goal is:</p>
-
         <ul>
           <li>
             <img
@@ -44,25 +43,28 @@
             score +10. Otherwise: lose 1 of the cat's seven lives
           </li>
         </ul>
-
+        <p>
+          Use arrow right, left, and up to play:
+          <img
+            id="game-keys"
+            src="images/arrow-buttons.png"
+            alt="Keyboard keys to play"
+          />
+        </p>
         <p>Have fun!</p>
-
         <div class="buttons">
           <button id="start-button">Start Game</button>
           <button id="restart-button">Restart Game</button>
         </div>
-
         <div class="game-score">
           <p id="score">Score: <span>0</span></p>
           <p id="lives">Lives: <span>7</span></p>
         </div>
       </div>
     </section>
-
     <section id="game-board">
       <canvas id="canvas" width="900" height="600"> </canvas>
     </section>
-
     <script type="text/javascript" src="js/index.js"></script>
   </body>
 </html>
