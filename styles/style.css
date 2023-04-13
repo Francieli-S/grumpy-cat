@@ -8,9 +8,14 @@ body {
   font-family: "Source Sans Pro", sans-serif;
 }
 
+#left-side {
+  margin-left: 20px;
+  background-color: rgb(252, 252, 201);
+  border-radius: 30% 150%;
+}
+
 .game-intro {
   text-align: center;
-  padding: 0 20px;
 }
 
 h1 {
@@ -19,6 +24,17 @@ h1 {
 
 ul {
   list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+li {
+  line-height: 30px;
+}
+
+.img-goals {
+  width: 4%;
+  height: 4%;
 }
 
 button {
@@ -47,4 +63,5 @@ button {
   background-image: url(../images/kitchen.png);
   background-size: 100%;
   background-position: center;
+  border-radius: 2%;
 }

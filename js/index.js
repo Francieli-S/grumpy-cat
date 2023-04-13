@@ -25,6 +25,7 @@ window.addEventListener("load", () => {
   const bgImg = new Image();
   bgImg.src = "images/kitchen.png";
 
+  // in case I decide to use more images:
   // class Node {
   //   constructor(value) {
   //     (this.value = value), (this.next = null);
@@ -56,6 +57,7 @@ window.addEventListener("load", () => {
   const catPushs = new Image();
   catPushs.src = "images/cat-pushing-right.png";
 
+  // image before start the game
   // const catSleep = new Image();
   // catSleep.src = "";
 
@@ -86,6 +88,7 @@ window.addEventListener("load", () => {
   let score = 0;
   let lives = 7;
 
+  // add sounds as properties
   class ElementFromTop {
     constructor(img, score) {
       this.img = img;
@@ -118,6 +121,7 @@ window.addEventListener("load", () => {
     }
   }
 
+  // definitely, refactor it:
   const drawCat = () => {
     if (!isMovingRight && !isMovingLeft && !isPushingCup) {
       ctx.beginPath();
@@ -145,6 +149,22 @@ window.addEventListener("load", () => {
     }
   };
 
+  const gameOverMessage = () => {
+    ctx.font = "100px Source Sans Pro";
+    ctx.fillStyle = "rgb(243, 60, 60)";
+    ctx.fillText("GAME OVER", canvas.width / 2 - 240, canvas.height / 2 + 250);
+  };
+
+  const winMessage = () => {
+    ctx.font = "70px Source Sans Pro";
+    ctx.fillStyle = "rgb(2, 170, 170)";
+    ctx.fillText(
+      "YOU WON! CONGRATS!",
+      canvas.width / 2 - 300,
+      canvas.height / 2 + 250
+    );
+  };
+
   const animate = () => {
     ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
     game.play();
@@ -153,11 +173,13 @@ window.addEventListener("load", () => {
 
     const elemFromTopStilInScreen = [];
 
+    // This part NEED to be refactored!!!
     elemFromTop.forEach((elem) => {
       elem.draw();
       if (score >= 100) {
+        winMessage();
         nextLevel = true;
-        scoreGame.innerText = "YOU WON! CONGRATS! Go to next level";
+        scoreGame.innerText = "Go to next level";
       } else if (elem.collision() && elem.img === cup && !isPushingCup) {
         scream.play();
         lives -= 1;
@@ -200,6 +222,7 @@ window.addEventListener("load", () => {
       const random = Math.floor(Math.random() * arr.length);
       const nextType = arr[random];
 
+      // Pass sounds here when new instance
       if (nextType === "CHOC") {
         elemFromTop.push(new ElementFromTop(chocolate, -1));
       } else if (nextType === "TRE") {
@@ -209,8 +232,12 @@ window.addEventListener("load", () => {
       }
     }
 
-    if (gameOver || nextLevel) {
+    if (gameOver) {
       cancelAnimationFrame(animatedId);
+      gameOverMessage();
+    } else if (nextLevel) {
+      cancelAnimationFrame(animatedId);
+      winMessage();
     } else {
       animatedId = requestAnimationFrame(animate);
     }
@@ -227,6 +254,7 @@ window.addEventListener("load", () => {
     isPushingCup = false;
 
     gameOver = false;
+    nextLevel = false;
     animatedId;
     elemFromTop = [];
 
