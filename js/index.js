@@ -1,8 +1,6 @@
 window.addEventListener("load", () => {
   const scoreGame = document.querySelector("#score span");
   const livesGame = document.querySelector("#lives span");
-  const startButton = document.querySelector("#start-button");
-  const restartButton = document.querySelector("#restart-button");
   const canvas = document.querySelector("#canvas");
   const ctx = canvas.getContext("2d");
 
@@ -271,6 +269,9 @@ window.addEventListener("load", () => {
     drawCat();
     animate();
   };
+
+  const startButton = document.querySelector("#start-button");
+  const restartButton = document.querySelector("#restart-button");
 
   startButton.addEventListener("click", () => {
     startGame();
