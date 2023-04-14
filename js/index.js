@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
   //purr.play();
 
   const game = new Audio("sounds/game.mp3");
-  game.play();
+  // game.play();
 
   const crunch = new Audio("sounds/crunch.mp3");
   crunch.play();
