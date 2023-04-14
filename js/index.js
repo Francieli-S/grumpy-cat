@@ -8,19 +8,19 @@ window.addEventListener("load", () => {
   //purr.play();
 
   const game = new Audio("sounds/game.mp3");
-  // game.play();
+  //game.play();
 
   const crunch = new Audio("sounds/crunch.mp3");
-  crunch.play();
+  //crunch.play();
 
   const whoosh = new Audio("sounds/whoosh.mp3");
-  whoosh.play();
+  //whoosh.play();
 
   const scream = new Audio("sounds/scream.mp3");
-  scream.play();
+  //scream.play();
 
   const yuck = new Audio("sounds/yuck.mp3");
-  yuck.play();
+  //yuck.play();
 
   const bgImg = new Image();
   bgImg.src = "images/kitchen.png";
